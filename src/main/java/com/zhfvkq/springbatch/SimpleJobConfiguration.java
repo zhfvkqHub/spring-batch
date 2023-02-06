@@ -6,48 +6,46 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@RequiredArgsConstructor
+import java.util.Map;
+
 @Configuration
-public class HelloJobConfiguration {
+@RequiredArgsConstructor
+public class SimpleJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job helloJob(@Qualifier("helloStep1") Step helloStep1,
-                        @Qualifier("helloStep2") Step helloStep2){
-        return jobBuilderFactory.get("helloJob")
-                .start(helloStep1)
-                .next(helloStep2)
+    public Job batchJob(){
+        return this.jobBuilderFactory.get("batchJob")
+                .start(step1())
+                .next(step2())
                 .build();
-
     }
 
     @Bean
-    public Step helloStep1() {
-        return stepBuilderFactory.get("helloStep1")
+    public Step step1() {
+        return stepBuilderFactory.get("step1")
                 .tasklet((contribution, chunkContext) -> {
-                    System.out.println(" =========================== ");
-                    System.out.println(" Hello Spring Batch!! ");
-                    System.out.println(" =========================== ");
+                    Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
+                    System.out.println(jobParameters);
+                    System.out.println("step1 was executed");
                     return RepeatStatus.FINISHED;
                 })
                 .build();
     }
 
     @Bean
-    public Step helloStep2() {
-        return stepBuilderFactory.get("helloStep2")
+    public Step step2() {
+        return stepBuilderFactory.get("step2")
                 .tasklet((contribution, chunkContext) -> {
-                    System.out.println(" =========================== ");
-                    System.out.println(" Hello Spring Batch2!! ");
-                    System.out.println(" =========================== ");
+                    System.out.println("step2 was executed");
                     return RepeatStatus.FINISHED;
                 })
                 .build();
     }
+
 }
