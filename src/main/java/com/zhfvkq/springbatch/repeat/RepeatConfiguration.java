@@ -26,7 +26,7 @@ public class RepeatConfiguration {
 
     @Bean
     public Job job(){
-        return this.jobBuilderFactory.get("chunkJob")
+        return this.jobBuilderFactory.get("repeatJob")
                 .start(step1())
                 .next(step2())
                 .build();

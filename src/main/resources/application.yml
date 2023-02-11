@@ -30,7 +30,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
   batch:
     jdbc:
-      initialize-schema: NEVER
+      initialize-schema: ALWAYS
     job:
       names: ${job.name:NONE}
 #      program arguments : --job.name=job
