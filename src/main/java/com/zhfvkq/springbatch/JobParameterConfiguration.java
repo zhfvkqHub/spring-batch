@@ -22,7 +22,7 @@ public class JobParameterConfiguration {
 
     @Bean
     public Job job(){
-        return this.jobBuilderFactory.get("jobsss")
+        return this.jobBuilderFactory.get("parameterJob")
                 .start(flow())
                 .next(step1())
                 .end()

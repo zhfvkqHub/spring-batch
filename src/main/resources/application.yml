@@ -1,6 +1,9 @@
 spring:
   profiles:
-    active: local
+    active: mysql
+
+  main:
+    allow-bean-definition-overriding: true
 
 ---
 spring:
